@@ -1,0 +1,12 @@
+cargo-features = ["edition2021"]
+
+[package]
+name = "owmath"
+version = "0.0.1"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+#maths-traits = "0.2.1"
+num-traits = "0.2.8"
