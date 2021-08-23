@@ -1,7 +1,8 @@
-pub mod traits;
 mod basic_arithmetic;
-use traits::TQ;
+pub mod traits;
 use traits::Sqrt;
+use traits::TQ;
+use std::fmt::Formatter;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Quaternion<T: TQ<T>> {
@@ -11,24 +12,24 @@ pub struct Quaternion<T: TQ<T>> {
     pub k: T,
 }
 
-impl<T: TQ<T>> Quaternion<T>
-{
+impl<T: TQ<T>> Quaternion<T> {
     pub fn new(r: T, i: T, j: T, k: T) -> Quaternion<T> {
-        Quaternion {
-            r,
-            i,
-            j,
-            k,
-        }
+        Quaternion { r, i, j, k }
     }
 
     pub fn norm(self) -> T {
-        Sqrt::sqrt(self.r*self.r + self.i*self.i + self.j*self.j + self.k*self.k)
+        Sqrt::sqrt(self.r * self.r + self.i * self.i + self.j * self.j + self.k * self.k)
     }
 
     /*pub fn zero() -> Quaternion<T> {
         Quaternion::new(T::zero(), T::zero(), T::zero(), T::zero())
     }*/
+}
+
+impl<T: TQ<T>> std::fmt::Display for Quaternion<T> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "({}, {}, {}, {})", self.r, self.i, self.j, self.k)
+    }
 }
 
 #[cfg(test)]
@@ -48,6 +49,12 @@ mod tests {
         assert!(abs(a.norm() - 6.0) < 0.0000001);
         let b = Quaternion::new(1.1, -1.0, 3.0, 5.0);
         assert!(abs(b.norm() - 6.0) > 0.0000001);
+    }
 
+    #[test]
+    fn display_print() {
+        let a = Quaternion::new(1.2, 2.0, 3.0, 4.0);
+        //println!("{} == (1.2, 2, 3, 4)", &a);
+        assert_eq!(format!("The origin is: {}", &a), "The origin is: (1.2, 2, 3, 4)");
     }
 }
