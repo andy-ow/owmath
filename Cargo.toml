@@ -10,7 +10,7 @@ edition = "2021"
 license = "MIT OR Apache-2.0"
 description = "Quaternions, basic functions"
 keywords = ["quaternion", "math"]
-categories = ["Mathematics", "Science"]
+categories = ["mathematics", "science"]
 
 [lib]
 name = "owmath"
