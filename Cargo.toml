@@ -13,7 +13,7 @@ keywords = ["quaternion", "math"]
 categories = ["Mathematics", "Science"]
 
 [lib]
-name = "quaternion"
+name = "owmath"
 path = "src/lib.rs"
 
 [dependencies]
