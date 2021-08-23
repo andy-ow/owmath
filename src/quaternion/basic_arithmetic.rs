@@ -2,14 +2,14 @@ use super::traits;
 use crate::Quaternion;
 use traits::TQ;
 
-impl<T: TQ<T>> std::ops::Neg for Quaternion<T> {
+impl<T: TQ> std::ops::Neg for Quaternion<T> {
     type Output = Self;
     fn neg(self) -> Self {
         Quaternion::new(-self.r, -self.i, -self.j, -self.k)
     }
 }
 
-impl<T: TQ<T>> std::ops::Add for Quaternion<T> {
+impl<T: TQ> std::ops::Add for Quaternion<T> {
     type Output = Self;
     fn add(self, other: Self) -> Self {
         Quaternion::new(
@@ -21,7 +21,7 @@ impl<T: TQ<T>> std::ops::Add for Quaternion<T> {
     }
 }
 
-impl<T: TQ<T>> std::ops::Sub for Quaternion<T> {
+impl<T: TQ> std::ops::Sub for Quaternion<T> {
     type Output = Self;
     fn sub(self, other: Self) -> Self {
         Quaternion::new(
@@ -33,7 +33,7 @@ impl<T: TQ<T>> std::ops::Sub for Quaternion<T> {
     }
 }
 
-impl<T: TQ<T>> std::ops::Mul<T> for Quaternion<T> {
+impl<T: TQ> std::ops::Mul<T> for Quaternion<T> {
     type Output = Self;
     fn mul(self, rhs: T) -> Self {
         Quaternion::new(self.r * rhs, self.i * rhs, self.j * rhs, self.k * rhs)
@@ -53,7 +53,7 @@ impl std::ops::Mul<Quaternion<f64>> for f64 {
     }
 }
 
-impl<T: TQ<T>> std::ops::Mul<Quaternion<T>> for Quaternion<T> {
+impl<T: TQ> std::ops::Mul<Quaternion<T>> for Quaternion<T> {
     type Output = Quaternion<T>;
     fn mul(self, rhs: Quaternion<T>) -> Quaternion<T> {
         Quaternion::new(
