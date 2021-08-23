@@ -17,5 +17,4 @@ name = "owmath"
 path = "src/lib.rs"
 
 [dependencies]
-#maths-traits = "0.2.1"
 num-traits = "0.2.8"
