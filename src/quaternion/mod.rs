@@ -2,31 +2,27 @@ mod basic_arithmetic;
 pub mod traits;
 use std::fmt::Formatter;
 use traits::Sqrt;
-use traits::TQ;
 
 #[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Quaternion<T: TQ> {
+pub struct Quaternion<T> {
     pub r: T,
     pub i: T,
     pub j: T,
     pub k: T,
 }
 
-impl<T: TQ> Quaternion<T> {
+impl<T> Quaternion<T> {
     pub fn new(r: T, i: T, j: T, k: T) -> Quaternion<T> {
         Quaternion { r, i, j, k }
     }
-
+}
+impl<T: Copy + Sqrt + std::ops::Add<Output = T> + std::ops::Mul<Output = T> + std::ops::Sub<Output = T>> Quaternion<T> {
     pub fn norm(self) -> T {
         Sqrt::sqrt(self.r * self.r + self.i * self.i + self.j * self.j + self.k * self.k)
     }
-
-    /*pub fn zero() -> Quaternion {
-        Quaternion::new(T::zero(), T::zero(), T::zero(), T::zero())
-    }*/
 }
 
-impl<T: TQ> std::fmt::Display for Quaternion<T> {
+impl<T: std::fmt::Display> std::fmt::Display for Quaternion<T> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "({}, {}, {}, {})", self.r, self.i, self.j, self.k)
     }

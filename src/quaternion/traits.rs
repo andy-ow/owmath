@@ -13,13 +13,3 @@ impl Sqrt for f64 {
         self.sqrt()
     }
 }
-
-pub trait TQ = std::ops::Mul<Self, Output = Self>
-    //+ Sized + std::ops::Add<Self, Output = Self> + num_traits::Zero
-    + std::ops::Add<Output = Self>
-    + std::ops::Sub<Output = Self>
-    + std::ops::Neg<Output = Self>
-    + std::fmt::Display
-    + PartialEq
-    + Sqrt
-    + Copy;
