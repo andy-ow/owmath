@@ -79,6 +79,7 @@ mod tests {
         assert_eq!(a.inverse(), Quaternion::new(0.5, 0.0, 0.0, 0.0));
         let b = Quaternion::new(1.0, 2.0, 3.0, 4.0);
         assert!((b - b.inverse().inverse()).norm() < 0.000000001);
+        assert!((Quaternion::new(1.0, 0.0, 0.0, 0.0)-b.inverse()*b).norm() < 0.000000001);
     }
 
     #[test]
