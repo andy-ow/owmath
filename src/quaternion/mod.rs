@@ -25,6 +25,11 @@ impl<T: Field<T>> Quaternion<T> {
     pub fn conjugate(self) -> Quaternion<T> {
         Self::new(self.r, -self.i, -self.j, -self.k)
     }
+
+    pub fn inverse(self) -> Quaternion<T> {
+        let quotient = self.r*self.r + self.i*self.i + self.j*self.j + self.k*self.k;
+        Self::new(self.r/quotient, -self.i/quotient, -self.j/quotient, -self.k/quotient)
+    }
 }
 
 impl<T> std::fmt::Display for Quaternion<T>
@@ -61,6 +66,14 @@ mod tests {
         assert_eq!(a.conjugate(), b);
         let c = Quaternion::new(1.2, 2.0, 3.0, 4.0);
         assert_eq!(c.conjugate().conjugate(), c);
+    }
+
+    #[test]
+    fn inverse() {
+        let a = Quaternion::new(2.0, 0.0, 0.0, 0.0);
+        assert_eq!(a.inverse(), Quaternion::new(0.5, 0.0, 0.0, 0.0));
+        let b = Quaternion::new(1.0, 2.0, 3.0, 4.0);
+        assert!((b-b.inverse().inverse()).norm() < 0.000000001);
     }
 
     #[test]
