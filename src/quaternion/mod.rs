@@ -13,7 +13,7 @@ pub struct Quaternion<T> {
     pub k: T,
 }
 
-impl<T: Field<T>> Quaternion<T> {
+impl<T: Field> Quaternion<T> {
     pub fn new(r: T, i: T, j: T, k: T) -> Quaternion<T> {
         Quaternion { r, i, j, k }
     }
@@ -27,8 +27,13 @@ impl<T: Field<T>> Quaternion<T> {
     }
 
     pub fn inverse(self) -> Quaternion<T> {
-        let quotient = self.r*self.r + self.i*self.i + self.j*self.j + self.k*self.k;
-        Self::new(self.r/quotient, -self.i/quotient, -self.j/quotient, -self.k/quotient)
+        let quotient = self.r * self.r + self.i * self.i + self.j * self.j + self.k * self.k;
+        Self::new(
+            self.r / quotient,
+            -self.i / quotient,
+            -self.j / quotient,
+            -self.k / quotient,
+        )
     }
 }
 
@@ -43,8 +48,8 @@ where
 
 #[cfg(test)]
 mod tests {
-    use num_traits::abs;
     use crate::quaternion::Quaternion;
+    use num_traits::abs;
 
     #[test]
     fn new_test() {
@@ -73,7 +78,7 @@ mod tests {
         let a = Quaternion::new(2.0, 0.0, 0.0, 0.0);
         assert_eq!(a.inverse(), Quaternion::new(0.5, 0.0, 0.0, 0.0));
         let b = Quaternion::new(1.0, 2.0, 3.0, 4.0);
-        assert!((b-b.inverse().inverse()).norm() < 0.000000001);
+        assert!((b - b.inverse().inverse()).norm() < 0.000000001);
     }
 
     #[test]
