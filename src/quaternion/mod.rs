@@ -1,5 +1,7 @@
 mod basic_arithmetic;
 pub mod traits;
+use crate::quaternion::traits::Field;
+
 use std::fmt::Formatter;
 use traits::Sqrt;
 
@@ -11,18 +13,24 @@ pub struct Quaternion<T> {
     pub k: T,
 }
 
-impl<T> Quaternion<T> {
+impl<T: Field<T>> Quaternion<T> {
     pub fn new(r: T, i: T, j: T, k: T) -> Quaternion<T> {
         Quaternion { r, i, j, k }
     }
-}
-impl<T: Copy + Sqrt + std::ops::Add<Output = T> + std::ops::Mul<Output = T> + std::ops::Sub<Output = T>> Quaternion<T> {
+
     pub fn norm(self) -> T {
         Sqrt::sqrt(self.r * self.r + self.i * self.i + self.j * self.j + self.k * self.k)
     }
+
+    pub fn conjugate(self) -> Quaternion<T> {
+        Self::new(self.r, -self.i, -self.j, -self.k)
+    }
 }
 
-impl<T: std::fmt::Display> std::fmt::Display for Quaternion<T> {
+impl<T> std::fmt::Display for Quaternion<T>
+where
+    T: std::fmt::Display,
+{
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "({}, {}, {}, {})", self.r, self.i, self.j, self.k)
     }
@@ -31,7 +39,6 @@ impl<T: std::fmt::Display> std::fmt::Display for Quaternion<T> {
 #[cfg(test)]
 mod tests {
     use num_traits::abs;
-
     use crate::quaternion::Quaternion;
 
     #[test]
@@ -45,6 +52,15 @@ mod tests {
         assert!(abs(a.norm() - 6.0) < 0.0000001);
         let b = Quaternion::new(1.1, -1.0, 3.0, 5.0);
         assert!(abs(b.norm() - 6.0) > 0.0000001);
+    }
+
+    #[test]
+    fn conjugate() {
+        let a = Quaternion::new(1.0, 2.0, 3.0, 4.0);
+        let b = Quaternion::new(1.0, -2.0, -3.0, -4.0);
+        assert_eq!(a.conjugate(), b);
+        let c = Quaternion::new(1.2, 2.0, 3.0, 4.0);
+        assert_eq!(c.conjugate().conjugate(), c);
     }
 
     #[test]
