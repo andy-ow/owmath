@@ -10,6 +10,16 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install latest nightly
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          override: false
+          components: tarpaulin
   build:
 
     runs-on: ubuntu-latest
