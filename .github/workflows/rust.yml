@@ -26,4 +26,4 @@ jobs:
     - name: Build
       run: cargo +nightly build --verbose
     - name: Run tests
-      run: cargo +nightly tarpaulin -v --fail-under 100
+      run: cargo-tarpaulin -v --fail-under 100
