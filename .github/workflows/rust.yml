@@ -19,7 +19,7 @@ jobs:
           profile: minimal
           toolchain: nightly
           override: false
-          components: tarpaulin
+
   build:
 
     runs-on: ubuntu-latest
