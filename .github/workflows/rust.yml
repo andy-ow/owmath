@@ -21,11 +21,13 @@ jobs:
       with:
             profile: minimal
             toolchain: nightly
-            override: false
+            override: true
     - uses: actions/checkout@v2
+    - name: rust-tarpaulin
+      uses: actions-rs/tarpaulin@v0.1.0
+      with:
+        args: '-- --fail-under 100'
     - name: Build
       run: cargo +nightly build --verbose
-    - name: Install Tarpaulin
-      run: cargo install cargo-tarpaulin
     - name: Run tests
       run: cargo +nightly tarpaulin -v --fail-under 100
