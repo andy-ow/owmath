@@ -12,9 +12,25 @@ pub trait Sqrt {
     fn sqrt(self) -> Self;
 }
 
+#[cfg(not(tarpaulin_include))]
 #[duplicate(TYPE; [f32]; [f64])]
 impl Sqrt for TYPE {
     fn sqrt(self: TYPE) -> TYPE {
         self.sqrt()
+    }
+}
+
+#[duplicate(TESTS TYPE; [tests_f32] [f32]; [tests_f64] [f64])]
+#[cfg(test)]
+mod TESTS {
+    #[allow(unused_imports)]
+    use crate::quaternion::traits::Sqrt;
+
+    #[test]
+    fn sqrt() {
+        let a: TYPE = 4.0;
+        let b: TYPE = 2.0;
+        let c = a.sqrt();
+        assert_eq!(b, c);
     }
 }
