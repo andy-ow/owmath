@@ -10,21 +10,18 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  install:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install latest nightly
-        uses: actions-rs/toolchain@v1
-        with:
-          profile: minimal
-          toolchain: nightly
-          override: false
 
   build:
 
     runs-on: ubuntu-latest
 
     steps:
+    - name: Install latest nightly
+      uses: actions-rs/toolchain@v1
+      with:
+            profile: minimal
+            toolchain: nightly
+            override: false
     - uses: actions/checkout@v2
     - name: Build
       run: cargo +nightly build --verbose
