@@ -54,7 +54,6 @@ where
     }
 }
 
-
 #[duplicate(TESTS TYPE EPSILON;
 [tests_f32] [f32] [0.000001];
 [tests_f64] [f64] [0.00000000000001];)]
@@ -62,52 +61,52 @@ where
 mod TESTS {
     use crate::quaternion::Quaternion;
     use num_traits::abs;
-    # [test]
+    #[test]
     fn new_test() {
-    let _a: Quaternion<TYPE> = Quaternion::new(1.0, 2.0, 3.0, 4.0);
+        let _a: Quaternion<TYPE> = Quaternion::new(1.0, 2.0, 3.0, 4.0);
     }
 
-    # [test]
+    #[test]
     fn norm_test() {
-    let a: Quaternion<TYPE> = Quaternion::new(1.0, - 1.0, 3.0, 5.0);
-    assert ! (abs(a.norm() - 6.0) < EPSILON);
-    let b: Quaternion<TYPE> = Quaternion::new(1.1, - 1.0, 3.0, 5.0);
-    assert ! (abs(b.norm() - 6.0) > EPSILON);
+        let a: Quaternion<TYPE> = Quaternion::new(1.0, -1.0, 3.0, 5.0);
+        assert!(abs(a.norm() - 6.0) < EPSILON);
+        let b: Quaternion<TYPE> = Quaternion::new(1.1, -1.0, 3.0, 5.0);
+        assert!(abs(b.norm() - 6.0) > EPSILON);
     }
 
-    # [test]
+    #[test]
     fn conjugate() {
-    let a: Quaternion<TYPE> = Quaternion::new(TYPE::into(1.0), 2.0, 3.0, 4.0);
-    let b: Quaternion<TYPE> = Quaternion::new(1.0, - 2.0, - 3.0, - 4.0);
-    assert_eq ! (a.conjugate(), b);
-    let c: Quaternion<TYPE> = Quaternion::new(1.2, 2.0, 3.0, 4.0);
-    assert_eq ! (c.conjugate().conjugate(), c);
+        let a: Quaternion<TYPE> = Quaternion::new(TYPE::into(1.0), 2.0, 3.0, 4.0);
+        let b: Quaternion<TYPE> = Quaternion::new(1.0, -2.0, -3.0, -4.0);
+        assert_eq!(a.conjugate(), b);
+        let c: Quaternion<TYPE> = Quaternion::new(1.2, 2.0, 3.0, 4.0);
+        assert_eq!(c.conjugate().conjugate(), c);
     }
 
-    # [test]
+    #[test]
     fn inverse() {
-    let a: Quaternion<TYPE> = Quaternion::new(2.0, 0.0, 0.0, 0.0);
-    assert_eq ! (a.inverse(), Quaternion::new(0.5, 0.0, 0.0, 0.0));
-    let b: Quaternion<TYPE> = Quaternion::new(1.0, 2.0, 3.0, 4.0);
-    assert! ((b - b.inverse().inverse()).norm() < EPSILON);
-    assert ! ((Quaternion::new(1.0, 0.0, 0.0, 0.0) - b.inverse() * b).norm() < EPSILON);
+        let a: Quaternion<TYPE> = Quaternion::new(2.0, 0.0, 0.0, 0.0);
+        assert_eq!(a.inverse(), Quaternion::new(0.5, 0.0, 0.0, 0.0));
+        let b: Quaternion<TYPE> = Quaternion::new(1.0, 2.0, 3.0, 4.0);
+        assert!((b - b.inverse().inverse()).norm() < EPSILON);
+        assert!((Quaternion::new(1.0, 0.0, 0.0, 0.0) - b.inverse() * b).norm() < EPSILON);
     }
 
-    # [test]
+    #[test]
     fn convert_tuple() {
-    let a: Quaternion<TYPE> = Quaternion::from((1.0, 2.0, 3.0, 4.0));
-    assert_eq ! (a, Quaternion::new(1.0, 2.0, 3.0, 4.0));
-    let b: Quaternion <TYPE> = (1.0, 2.0, 3.0, 4.0).into();
-    assert_eq ! (a, b);
+        let a: Quaternion<TYPE> = Quaternion::from((1.0, 2.0, 3.0, 4.0));
+        assert_eq!(a, Quaternion::new(1.0, 2.0, 3.0, 4.0));
+        let b: Quaternion<TYPE> = (1.0, 2.0, 3.0, 4.0).into();
+        assert_eq!(a, b);
     }
 
-    # [test]
+    #[test]
     fn display_print() {
-    let a = Quaternion::new(1.2, 2.0, 3.0, 4.0);
-    //println!("{} == (1.2, 2, 3, 4)", &a);
-    assert_eq ! (
-    format ! ("The origin is: {}", & a),
-    "The origin is: (1.2, 2, 3, 4)"
-    );
+        let a = Quaternion::new(1.2, 2.0, 3.0, 4.0);
+        //println!("{} == (1.2, 2, 3, 4)", &a);
+        assert_eq!(
+            format!("The origin is: {}", &a),
+            "The origin is: (1.2, 2, 3, 4)"
+        );
     }
-    }
+}
