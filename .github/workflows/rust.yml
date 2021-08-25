@@ -26,6 +26,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build
       run: cargo +nightly build --verbose
-    - name: Run cargo-tarpaulin
+    - name: Test (Run cargo-tarpaulin)
       uses: actions-rs/tarpaulin@v0.1
+      with:
+        args: "-v --fail-under 100"
 
