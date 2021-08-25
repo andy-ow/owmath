@@ -23,10 +23,6 @@ jobs:
             toolchain: nightly
             override: true
     - uses: actions/checkout@v2
-    - name: rust-tarpaulin
-      uses: actions-rs/tarpaulin@v0.1.0
-      with:
-        args: '-- --fail-under 100'
     - name: Build
       run: cargo +nightly build --verbose
     - name: Run tests
