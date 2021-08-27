@@ -38,6 +38,7 @@ jobs:
         uses: actions-rs/tarpaulin@v0.1
         with:
           args: "-v --fail-under 100"
+          out-type: "Stdout"
       - name: Login to crates.io
         run: cargo login $CRATES_IO_TOKEN
         env:
