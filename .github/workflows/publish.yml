@@ -9,28 +9,10 @@ env:
 
 jobs:
   setup:
-
     runs-on: ubuntu-latest
     steps:
       - name: Install jq
         run: sudo apt-get --force-yes install jq
-      - name: Calculate the version
-        env:
-          RELEASE_VERSION_STRING: ${{ github.ref }}
-        run: |
-             if [ $RELEASE_VERSION_STRING != 'RELEASE_VERSION_STRING=refs/heads/v'$(cargo read-manifest | jq -r '.version' | tr '-' '~') ]
-             then
-             exit 1
-             fi
-
-        # the next steps will be only executed if there is a TAG beginning with v
-        # and with the VERSION in Cargo.toml,
-        # for example v0.0.6
-        #
-  build:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
         with:
@@ -38,13 +20,30 @@ jobs:
           toolchain: nightly
           override: true
       - uses: actions/checkout@v2
+      - name: Calculate the version
+        env:
+            RELEASE_VERSION_STRING: ${{ github.ref }}
+        run: |
+            if [ $RELEASE_VERSION_STRING != 'RELEASE_VERSION_STRING=refs/heads/v'$(cargo read-manifest | jq -r '.version' | tr '-' '~') ]
+            then
+            exit 1
+            fi
+
+          # the next steps will be only executed if there is a TAG beginning with v
+          # and with the VERSION in Cargo.toml,
+          # for example v0.0.6
+          #
+  build:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
       - name: Build
         run: cargo +nightly build --verbose
+
       - name: Test (Run cargo-tarpaulin)
         uses: actions-rs/tarpaulin@v0.1
         with:
           args: "-v --fail-under 100"
-
   publish:
     needs: build
     runs-on: ubuntu-latest
