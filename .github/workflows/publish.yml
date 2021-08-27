@@ -10,9 +10,9 @@ env:
 jobs:
 
   setup:
-    # the next steps will be only executed if there is a TAG beginning with R_
+    # the next steps will be only executed if there is a TAG beginning with v
     # and with the VERSION in Cargo.toml,
-    # for example R_0.0.6
+    # for example v0.0.6
     #
 
     runs-on: ubuntu-latest
@@ -27,8 +27,8 @@ jobs:
           toolchain: nightly
           override: true
       - name: Calculate the version
-          run: |
-            VERSION=$(cargo read-manifest | jq -r '.version' | tr '-' '~')
+        run: |
+        RELEASE_VERSION_STRING='refs/heads/v'$(cargo read-manifest | jq -r '.version' | tr '-' '~')
       - uses: actions/checkout@v2
       - name: Build
         run: cargo +nightly build --verbose
@@ -40,7 +40,7 @@ jobs:
   publish:
     needs: build
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/R_${VERSION}' }}
+    if: ${{ github.ref == env.RELEASE_VERSION_STRING }}
     steps:
       - name: Login to crates.io
       run: cargo login $CRATES_IO_TOKEN
