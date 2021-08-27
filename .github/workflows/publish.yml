@@ -15,7 +15,7 @@ jobs:
       - name: Install jq
         run: sudo apt-get --force-yes install jq
       - name: Calculate the version
-        run: echo 'refs/heads/v'$(cargo read-manifest | jq -r '.version' | tr '-' '~') | tee -a $GITHUB_ENV;
+        run: echo 'RELEASE_VERSION_STRING=refs/heads/v'$(cargo read-manifest | jq -r '.version' | tr '-' '~') | tee -a $GITHUB_ENV;
 
         # the next steps will be only executed if there is a TAG beginning with v
         # and with the VERSION in Cargo.toml,
