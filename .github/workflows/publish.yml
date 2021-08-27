@@ -29,6 +29,7 @@ jobs:
       - name: Calculate the version
         run: |
         RELEASE_VERSION_STRING='refs/heads/v'$(cargo read-manifest | jq -r '.version' | tr '-' '~')
+
       - uses: actions/checkout@v2
       - name: Build
         run: cargo +nightly build --verbose
