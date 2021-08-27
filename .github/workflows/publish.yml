@@ -8,7 +8,7 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  version_check:
+  publish:
     runs-on: ubuntu-latest
     steps:
       - name: Install jq
@@ -26,11 +26,6 @@ jobs:
           # and with the VERSION in Cargo.toml,
           # for example v0.0.6
           #
-
-  publish:
-    needs: version_check
-    runs-on: ubuntu-latest
-    steps:
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
         with:
