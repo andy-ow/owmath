@@ -8,31 +8,35 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  setup:
+  version_check:
     runs-on: ubuntu-latest
     steps:
       - name: Install jq
         run: sudo apt-get --force-yes install jq
+      - uses: actions/checkout@v2
+      - name: Calculate the version
+        env:
+          RELEASE_VERSION_STRING: ${{ github.ref }}
+        run: |
+          if [ $RELEASE_VERSION_STRING != 'refs/heads/v'$(cargo read-manifest | jq -r '.version' | tr '-' '~') ]
+          then
+          exit 1
+          fi
+
+          # the next steps will be only executed if there is a TAG beginning with v
+          # and with the VERSION in Cargo.toml,
+          # for example v0.0.6
+          #
+  setup:
+    needs: version_check
+    runs-on: ubuntu-latest
+    steps:
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
         with:
           profile: minimal
           toolchain: nightly
           override: true
-      - uses: actions/checkout@v2
-      - name: Calculate the version
-        env:
-            RELEASE_VERSION_STRING: ${{ github.ref }}
-        run: |
-            if [ $RELEASE_VERSION_STRING != 'RELEASE_VERSION_STRING=refs/heads/v'$(cargo read-manifest | jq -r '.version' | tr '-' '~') ]
-            then
-            exit 1
-            fi
-
-          # the next steps will be only executed if there is a TAG beginning with v
-          # and with the VERSION in Cargo.toml,
-          # for example v0.0.6
-          #
   build:
     needs: setup
     runs-on: ubuntu-latest
