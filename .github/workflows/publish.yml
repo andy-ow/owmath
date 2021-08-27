@@ -22,13 +22,13 @@ jobs:
           then
           exit 1
           fi
-
           # the next steps will be only executed if there is a TAG beginning with v
           # and with the VERSION in Cargo.toml,
           # for example v0.0.6
           #
-  setup:
-    needs: version_check
+
+  publish:
+    needs: version-check
     runs-on: ubuntu-latest
     steps:
       - name: Install latest nightly
@@ -37,21 +37,12 @@ jobs:
           profile: minimal
           toolchain: nightly
           override: true
-  build:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
       - name: Build
         run: cargo +nightly build --verbose
-
       - name: Test (Run cargo-tarpaulin)
         uses: actions-rs/tarpaulin@v0.1
         with:
           args: "-v --fail-under 100"
-  publish:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
       - name: Login to crates.io
         run: cargo login $CRATES_IO_TOKEN
         env:
