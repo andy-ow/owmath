@@ -28,7 +28,7 @@ jobs:
           #
 
   publish:
-    needs: version-check
+    needs: version_check
     runs-on: ubuntu-latest
     steps:
       - name: Install latest nightly
