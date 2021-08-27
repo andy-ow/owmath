@@ -8,21 +8,24 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-
   setup:
-    # the next steps will be only executed if there is a TAG beginning with v
-    # and with the VERSION in Cargo.toml,
-    # for example v0.0.6
-    #
 
     runs-on: ubuntu-latest
-
     steps:
-      - name: Install jq & sponge
-        run: sudo apt-get update && sudo apt-get --yes --force-yes install jq moreutils
+      - name: Install jq
+        run: sudo apt-get --force-yes install jq
       - name: Calculate the version
         run: |
-        RELEASE_VERSION_STRING='refs/heads/v'$(cargo read-manifest | jq -r '.version' | tr '-' '~')
+        RELEASE_VERSION_STRING='refs/heads/v'$(cargo read-manifest | jq -r '.version' | tr '-' '~');
+        # the next steps will be only executed if there is a TAG beginning with v
+        # and with the VERSION in Cargo.toml,
+        # for example v0.0.6
+        #
+  build:
+    needs: setup
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == env.RELEASE_VERSION_STRING }}
+    steps:
       - name: Install latest nightly
         uses: actions-rs/toolchain@v1
         with:
@@ -40,7 +43,6 @@ jobs:
   publish:
     needs: build
     runs-on: ubuntu-latest
-    if: ${{ github.ref == env.RELEASE_VERSION_STRING }}
     steps:
       - name: Login to crates.io
       run: cargo login $CRATES_IO_TOKEN
