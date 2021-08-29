@@ -4,6 +4,13 @@ use duplicate::duplicate;
 
 impl<T: Field> std::ops::Neg for Quaternion<T> {
     type Output = Self;
+    /// Performs the unary - operation.
+    /// ## Example
+    /// ```rust
+    /// use owmath::Quaternion;
+    /// let a: Quaternion<f64> = Quaternion::new(-1.0, 2.0, 3.0, 4.0);
+    /// assert_eq!( -a, Quaternion::new(1.0, -2.0, -3.0, -4.0));
+    /// ```
     fn neg(self) -> Self {
         Quaternion::new(-self.r, -self.i, -self.j, -self.k)
     }
@@ -11,6 +18,14 @@ impl<T: Field> std::ops::Neg for Quaternion<T> {
 
 impl<T: Field> std::ops::Add for Quaternion<T> {
     type Output = Self;
+    /// Performs the + operation.
+    /// ## Example
+    /// ```rust
+    /// use owmath::Quaternion;
+    /// let a = Quaternion::new(1.0, 2.0, 3.0, -4.0);
+    /// let b = Quaternion::new(1.1, 1.2, -1.9, -1.9);
+    /// assert_eq!(a + b, Quaternion::new(2.1, 3.2, 1.1, -5.9));
+    /// ```
     fn add(self, rhs: Self) -> Self {
         Quaternion::new(
             self.r + rhs.r,
@@ -23,6 +38,14 @@ impl<T: Field> std::ops::Add for Quaternion<T> {
 
 impl<T: Field> std::ops::Sub for Quaternion<T> {
     type Output = Self;
+    /// Performs the - operation.
+    /// ## Example
+    /// ```rust
+    /// use owmath::Quaternion;
+    /// let a = Quaternion::new(1.0, 2.0, 3.0, -4.0);
+    /// let b = Quaternion::new(1.0, 1.0, -2.0, -2.0);
+    /// assert_eq!(a - b, Quaternion::new(0.0, 1.0, 5.0, -2.0));
+    /// ```
     fn sub(self, rhs: Self) -> Self {
         Quaternion::new(
             self.r - rhs.r,
@@ -35,6 +58,15 @@ impl<T: Field> std::ops::Sub for Quaternion<T> {
 
 impl<T: Field> std::ops::Mul<T> for Quaternion<T> {
     type Output = Self;
+    /// Performs the * operation (scalar * quaternion)
+    /// ## Example
+    /// ```rust
+    /// use owmath::Quaternion;
+    /// let a: Quaternion<f64> = Quaternion::new(1.0, 2.0, 3.0, -4.0);
+    /// let b = 5.0;
+    /// assert_eq!(a * b, Quaternion::new(5.0, 10.0, 15.0, -20.0));
+    /// assert_eq!(b * a, Quaternion::new(5.0, 10.0, 15.0, -20.0));
+    /// ```
     fn mul(self, rhs: T) -> Self {
         Quaternion::new(self.r * rhs, self.i * rhs, self.j * rhs, self.k * rhs)
     }
@@ -43,6 +75,15 @@ impl<T: Field> std::ops::Mul<T> for Quaternion<T> {
 #[duplicate(TYPE; [f32]; [f64])]
 impl std::ops::Mul<Quaternion<TYPE>> for TYPE {
     type Output = Quaternion<TYPE>;
+    /// Performs the * operation (scalar * quaternion)
+    /// ## Example
+    /// ```rust
+    /// use owmath::Quaternion;
+    /// let a = Quaternion::new(1.0, 2.0, 3.0, -4.0);
+    /// let b = 5.0;
+    /// assert_eq!(a * b, Quaternion::new(5.0, 10.0, 15.0, -20.0));
+    /// assert_eq!(b * a, Quaternion::new(5.0, 10.0, 15.0, -20.0));
+    /// ```
     fn mul(self, rhs: Quaternion<TYPE>) -> Quaternion<TYPE> {
         rhs * self
     }
@@ -50,6 +91,14 @@ impl std::ops::Mul<Quaternion<TYPE>> for TYPE {
 
 impl<T: Field> std::ops::Mul<Quaternion<T>> for Quaternion<T> {
     type Output = Quaternion<T>;
+    /// Performs the * operation (<b>Hamilton product</b>, quaternion * quaternion)
+    /// ## Example
+    /// ```rust
+    /// use owmath::Quaternion;
+    /// let a = Quaternion::new(1.0, 2.0, 3.0, 4.0);
+    /// let b = Quaternion::new(2.0, 3.0, 4.0, 5.0);
+    /// assert_eq!(a * b, Quaternion::new(-36.0, 6.0, 12.0, 12.0))
+    /// ```
     fn mul(self, rhs: Quaternion<T>) -> Quaternion<T> {
         Quaternion::new(
             self.r * rhs.r - self.i * rhs.i - self.j * rhs.j - self.k * rhs.k,

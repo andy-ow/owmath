@@ -6,6 +6,34 @@ use duplicate::duplicate;
 use std::fmt::Formatter;
 use traits::Sqrt;
 
+/// A quaternion number of the form a + b<b>i</b> + c<b>j</b> + d<b>k</b>.
+/// T is either f32, f64 or must implement the following traits:
+/// Copy
+///     + owmath::quaternion::traits::Sqrt
+///     + std::ops::Neg<Output = Self>
+///     + std::ops::Add<Output = Self>
+///     + std::ops::Sub<Output = Self>
+///     + std::ops::Mul<Output = Self>
+///     + std::ops::Div<Output = Self>
+///
+/// ## Example
+///
+/// ```rust
+/// use owmath::quaternion::Quaternion;
+///
+/// fn main() {
+///     let a = Quaternion::new(1.0, 2.0, 3.0, 4.0);
+///     let b: Quaternion<f64> = (2.0, 3.0, 4.0, 5.0).into();
+///     println!("{} + {} = {}", a, b, a+b);
+///     println!("{} * {} = {}", a, b, a*b);
+///     println!("{} * {} = {}", b, a, b*a);
+///     println!("2 * {} = {}", a, 2.0*a);  // works only for Quaternion<f32> and Quaternion<f64>
+///     println!("{} * 2 = {}", a, a*2.0);
+///     println!("{}⁻¹ = {}", a, a.inverse());
+///     println!("{}.norm() = {}", a, a.norm());
+///     println!("{}.conjugate() = {}", a, a.conjugate());
+/// }
+/// ```
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Quaternion<T> {
     pub r: T,

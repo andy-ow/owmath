@@ -1,5 +1,6 @@
 use duplicate::duplicate;
 
+/// Trait alias.
 pub trait Field:
     Copy
     + Sqrt
@@ -20,7 +21,7 @@ impl<U> Field for U where
         + std::ops::Div<Output = Self>
 {
 }
-
+/// Needs to be implemented for <b>T</b> for ```Quaternion<T>```, in case you want to use something else than ```f32``` or ```f64```.
 pub trait Sqrt {
     fn sqrt(self) -> Self;
 }
