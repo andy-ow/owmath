@@ -1,5 +1,3 @@
-#![feature(trait_alias)]
-
 pub mod quaternion;
 
 pub use self::quaternion::Quaternion;

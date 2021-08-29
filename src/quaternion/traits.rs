@@ -1,12 +1,25 @@
 use duplicate::duplicate;
 
-pub trait Field = Copy
+pub trait Field:
+    Copy
     + Sqrt
     + std::ops::Neg<Output = Self>
     + std::ops::Add<Output = Self>
     + std::ops::Sub<Output = Self>
     + std::ops::Mul<Output = Self>
-    + std::ops::Div<Output = Self>;
+    + std::ops::Div<Output = Self>
+{
+}
+impl<U> Field for U where
+    U: Copy
+        + Sqrt
+        + std::ops::Neg<Output = Self>
+        + std::ops::Add<Output = Self>
+        + std::ops::Sub<Output = Self>
+        + std::ops::Mul<Output = Self>
+        + std::ops::Div<Output = Self>
+{
+}
 
 pub trait Sqrt {
     fn sqrt(self) -> Self;
