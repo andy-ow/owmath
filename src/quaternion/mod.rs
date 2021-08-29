@@ -91,7 +91,6 @@ where
 #[cfg(test)]
 mod TESTS {
     use crate::quaternion::Quaternion;
-    use num_traits::abs;
     #[test]
     fn new_test() {
         let _a: Quaternion<TYPE> = Quaternion::new(1.0, 2.0, 3.0, 4.0);
@@ -100,9 +99,9 @@ mod TESTS {
     #[test]
     fn norm_test() {
         let a: Quaternion<TYPE> = Quaternion::new(1.0, -1.0, 3.0, 5.0);
-        assert!(abs(a.norm() - 6.0) < EPSILON);
+        assert!((a.norm() - 6.0).abs() < EPSILON);
         let b: Quaternion<TYPE> = Quaternion::new(1.1, -1.0, 3.0, 5.0);
-        assert!(abs(b.norm() - 6.0) > EPSILON);
+        assert!((b.norm() - 6.0).abs() > EPSILON);
     }
 
     #[test]
