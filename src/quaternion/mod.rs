@@ -15,18 +15,21 @@ pub struct Quaternion<T> {
 }
 
 impl<T: Field> Quaternion<T> {
+    /// Creates a new quaternion.
     pub fn new(r: T, i: T, j: T, k: T) -> Quaternion<T> {
         Quaternion { r, i, j, k }
     }
 
+    /// Norm. (a, b, c, d).norm() := sqrt(a² + b² + c² + d²)
     pub fn norm(self) -> T {
         Sqrt::sqrt(self.r * self.r + self.i * self.i + self.j * self.j + self.k * self.k)
     }
-
+    /// Conjugate. (a, b, c, d).conjugate() := (a, -b, -c, -d)
     pub fn conjugate(self) -> Quaternion<T> {
         Self::new(self.r, -self.i, -self.j, -self.k)
     }
 
+    /// Inverse. (a, b, c, d).inverse() := (a, b, c, d)⁻¹
     pub fn inverse(self) -> Quaternion<T> {
         let quotient = self.r * self.r + self.i * self.i + self.j * self.j + self.k * self.k;
         Self::new(
