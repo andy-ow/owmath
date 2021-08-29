@@ -4,17 +4,16 @@ name = "owmath"
 authors = ["Andrzej Owsikowski <ajoinfinity@gmail.com>"]
 homepage = "https://ajoinfinity.com/"
 repository = "https://github.com/andy-ow/owmath"
-version = "0.0.7"
+version = "0.0.8"
 edition = "2018"
 license = "MIT OR Apache-2.0"
 description = "Quaternions, basic functions"
 keywords = ["quaternion", "math"]
-categories = ["mathematics", "science"]
+categories = ["mathematics", "science", "data-structures"]
 
 [lib]
 name = "owmath"
 path = "src/lib.rs"
 
 [dependencies]
-num-traits = "0.2.8"
 duplicate = "0.3.0"

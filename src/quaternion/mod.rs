@@ -6,6 +6,34 @@ use duplicate::duplicate;
 use std::fmt::Formatter;
 use traits::Sqrt;
 
+/// A quaternion number of the form a + b<b>i</b> + c<b>j</b> + d<b>k</b>.
+/// T is either f32, f64 or must implement the following traits:
+/// Copy
+///     + owmath::quaternion::traits::Sqrt
+///     + std::ops::Neg<Output = Self>
+///     + std::ops::Add<Output = Self>
+///     + std::ops::Sub<Output = Self>
+///     + std::ops::Mul<Output = Self>
+///     + std::ops::Div<Output = Self>
+///
+/// ## Example
+///
+/// ```rust
+/// use owmath::quaternion::Quaternion;
+///
+/// fn main() {
+///     let a = Quaternion::new(1.0, 2.0, 3.0, 4.0);
+///     let b: Quaternion<f64> = (2.0, 3.0, 4.0, 5.0).into();
+///     println!("{} + {} = {}", a, b, a+b);
+///     println!("{} * {} = {}", a, b, a*b);
+///     println!("{} * {} = {}", b, a, b*a);
+///     println!("2 * {} = {}", a, 2.0*a);  // works only for Quaternion<f32> and Quaternion<f64>
+///     println!("{} * 2 = {}", a, a*2.0);
+///     println!("{}⁻¹ = {}", a, a.inverse());
+///     println!("{}.norm() = {}", a, a.norm());
+///     println!("{}.conjugate() = {}", a, a.conjugate());
+/// }
+/// ```
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Quaternion<T> {
     pub r: T,
@@ -15,18 +43,21 @@ pub struct Quaternion<T> {
 }
 
 impl<T: Field> Quaternion<T> {
+    /// Creates a new quaternion.
     pub fn new(r: T, i: T, j: T, k: T) -> Quaternion<T> {
         Quaternion { r, i, j, k }
     }
 
+    /// Norm. (a, b, c, d).norm() := sqrt(a² + b² + c² + d²)
     pub fn norm(self) -> T {
         Sqrt::sqrt(self.r * self.r + self.i * self.i + self.j * self.j + self.k * self.k)
     }
-
+    /// Conjugate. (a, b, c, d).conjugate() := (a, -b, -c, -d)
     pub fn conjugate(self) -> Quaternion<T> {
         Self::new(self.r, -self.i, -self.j, -self.k)
     }
 
+    /// Inverse. (a, b, c, d).inverse() := (a, b, c, d)⁻¹
     pub fn inverse(self) -> Quaternion<T> {
         let quotient = self.r * self.r + self.i * self.i + self.j * self.j + self.k * self.k;
         Self::new(
@@ -60,7 +91,6 @@ where
 #[cfg(test)]
 mod TESTS {
     use crate::quaternion::Quaternion;
-    use num_traits::abs;
     #[test]
     fn new_test() {
         let _a: Quaternion<TYPE> = Quaternion::new(1.0, 2.0, 3.0, 4.0);
@@ -69,9 +99,9 @@ mod TESTS {
     #[test]
     fn norm_test() {
         let a: Quaternion<TYPE> = Quaternion::new(1.0, -1.0, 3.0, 5.0);
-        assert!(abs(a.norm() - 6.0) < EPSILON);
+        assert!((a.norm() - 6.0).abs() < EPSILON);
         let b: Quaternion<TYPE> = Quaternion::new(1.1, -1.0, 3.0, 5.0);
-        assert!(abs(b.norm() - 6.0) > EPSILON);
+        assert!((b.norm() - 6.0).abs() > EPSILON);
     }
 
     #[test]
