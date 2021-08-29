@@ -18,16 +18,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Install latest nightly
-      uses: actions-rs/toolchain@v1
-      with:
-            profile: minimal
-            toolchain: nightly
-            override: true
-
     - uses: actions/checkout@v2
     - name: Build
-      run: cargo +nightly build --verbose
+      run: cargo build --verbose
     - name: Test (Run cargo-tarpaulin)
       uses: actions-rs/tarpaulin@v0.1
       with:
